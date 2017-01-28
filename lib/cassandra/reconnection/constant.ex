@@ -8,7 +8,7 @@ defmodule Cassandra.Reconnection.Constant do
   * `:step` - number of milliseconds to add to backoff after a failed retry (default: `1000`)
   * `:jitter` - noise factor (default: `0.2`)
   * `:max` - max backoff time in milliseconds (default: `12000`)
-  * `:max_attempts` - max number of attempts on a host befor aborting (default: `3`)
+  * `:max_attempts` - max number of attempts on a host before aborting (default: `3`)
   """
 
   defstruct [
