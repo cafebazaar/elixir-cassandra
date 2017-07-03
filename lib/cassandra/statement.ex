@@ -24,7 +24,7 @@ defmodule Cassandra.Statement do
 
   def new(query, options, defaults) do
     options = Keyword.put_new_lazy options, :consistency, fn ->
-      consistency(query, defaults)
+      consistency(query, options, defaults)
     end
     new(query, options)
   end
@@ -68,7 +68,7 @@ defmodule Cassandra.Statement do
   end
   defp partition_key(_, _), do: nil
 
-  defp consistency(query, defaults) do
+  defp consistency(query, options, defaults) do
     key =
       if read?(query) do
         :read_consistency
@@ -76,7 +76,10 @@ defmodule Cassandra.Statement do
         :write_consistency
       end
 
-    Keyword.get(defaults, key, :quorum)
+    case Keyword.get(options, key) do
+      nil   -> Keyword.get(defaults, key, :quorum)
+      value -> value
+    end
   end
 
   defp read?("SELECT" <> _), do: true
